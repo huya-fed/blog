@@ -1,0 +1,255 @@
+/*
+中文官网：http://eslint.cn
+规则参考: https://github.com/standard/standard/blob/master/docs/RULES-zhcn.md
+语法：
+	"rule": [
+		${level}, // 报错级别："off" 或 0 - 关闭规则；"warn" 或 1，发出警告；"error" 或 2，终止脚本
+		${option1}, // 该规则下的其他子限制
+		${option2},
+		.....
+	]
+*/
+{
+	"parser": "babel-eslint",
+	"env": {
+		"browser": true
+	},
+	"parserOptions": {
+		"ecmaVersion": 5
+	},
+	"globals": {
+	    "jQuery": false,
+	    "$": false
+	},
+	"rules": {
+		"indent": [
+			"error",
+			//一个tab为一个缩进单位 
+			"tab",
+			{ 
+				// 每个switch case一个缩进单位
+				"SwitchCase": 1,
+				"VariableDeclarator": {
+					"var": 1,
+					"let": 1,
+					"const": 1
+				} 
+			}
+		],
+		// 要求尽可能地使用单引号，允许字符串使用反勾号
+		"quotes": [
+			"error",
+			"single",
+			{
+				"allowTemplateLiterals": true
+			}
+		],
+		// 禁止出现未使用过的变量
+		"no-unused-vars": [
+			"error"
+		],
+		// 强制关键字之前之后至少有一个空格
+		"keyword-spacing": [
+			"error",
+			{
+				"before": true,
+				"after": true
+			}
+		],
+		// 必需使用 === 或者 !==
+		"eqeqeq": [
+			"error"
+		],
+		// 字符串拼接操作符 (Infix operators) 之间要留空格。
+		"space-infix-ops": [
+			"error"
+		],
+		// 逗号后面加空格。
+		"comma-spacing": [
+			"error",
+			{ 
+				"before": false, 
+				"after": true 
+			}
+		],
+		// 强制在代码块中使用一致的大括号风格
+		"brace-style": [
+			"error", 
+			"1tbs", 
+			{ 
+				"allowSingleLine": true 
+			}
+		],
+		// 强制所有控制语句使用一致的括号风格
+		"curly": [
+			"error"
+		],
+		// 不要丢掉异常处理中err参数。
+		"handle-callback-err" : [
+			"error",
+			"^(err|error|anySpecificError)$"
+		],
+		// 禁用未声明的变量，除非它们在 /*global */ 注释中被提到
+		"no-undef": [
+			"error"
+		],
+		// 对于三元运算符 ? 和 : 与他们所负责的代码处于同一行
+		"operator-linebreak": [
+			"error", 
+			"before"
+		],
+		// 每个 var 关键字单独声明一个变量。
+		"one-var": [
+			"error", 
+			"never"
+		],
+		// 条件语句中赋值语句使用括号包起来。
+		"no-cond-assign": [
+			"error"
+		],
+		// 单行代码块两边加空格。
+		"block-spacing": [
+			"error"
+		],
+		// 强制使用骆驼拼写法命名约定
+		"camelcase" : [
+			"error",
+			{ 
+				"properties": "never" 
+			}
+		],
+		// 始终将逗号置于行末
+		"comma-style": [
+			"error", 
+			"last"
+		],
+		// 函数调用时标识符与括号间不留间隔。
+		"func-call-spacing": [
+			"error", 
+			"never"
+		],
+		// 键值对当中冒号与值之间要留空白。
+		"key-spacing": ["error", { "beforeColon": false }],
+		// 要求构造函数首字母大写
+		"new-cap": ["error"],
+		// 子类的构造器中一定要调用 super
+		"constructor-super": ["error"],
+		// 避免修改使用 const 声明的变量。
+		"no-const-assign": ["error"],
+		// 不要定义冗余的函数参数。
+		"no-dupe-args": ["error"],
+		// 类中不要定义冗余的属性。
+		"no-dupe-class-members": ["error"],
+		// 对象字面量中不要定义重复的属性。
+		"no-dupe-keys": ["error"],
+		// switch 语句中不要定义重复的 case 分支。
+		"no-duplicate-case": ["error"],
+		// 同一模块有多个导入时一次性写完。
+		"no-duplicate-imports": ["error"],
+		// 禁止在正则表达式中使用空字符集
+		"no-empty-character-class": ["error"],
+		// 禁用隐式的eval()，例如：
+		// setTimeout("alert('Hi!');", 100); 是错误的，应该写成
+		//
+		// setTimeout(function() {
+		//    alert("Hi!");
+		//  }, 100);
+		"no-implied-eval": [
+			"error"
+		],
+		// 禁止在逻辑表达式、条件表达式、声明、数组元素、对象属性、序列和函数参数周围使用多个空格
+		"no-multi-spaces": [
+			"error"
+		],
+		// 代码块首尾留空格。
+		"space-before-blocks": ["error"],
+		// 圆括号间不留空格。
+		"space-in-parens": ["error", "never"],
+		// 注释首尾留空格。
+		"spaced-comment": ["error", "always"],
+		// 模板字符串中变量前后不加空格。
+		"template-curly-spacing": ["error", "never"],
+		// 用合法的字符串跟 typeof 进行比较操作。
+		"valid-typeof": "error",
+		// 不要使用 (, [, or ` 等作为一行的开始。在没有分号的情况下代码压缩后会导致报错，而坚持这一规范则可避免出错。
+		"no-unexpected-multiline": ["error"],
+		// 禁止出现空块语句
+		"no-empty": [
+			"error",
+			// try catch 里面的 catch块 可以例外
+			{
+				"allowEmptyCatch": true
+			}
+		],
+		// 强制使用分号结尾
+		"semi": [
+			"error",
+			"always"
+		],
+		// 可嵌套最大深度为4
+		"max-depth": [
+			"error",
+			{
+				"max": 4
+			}
+		],
+		// 要求箭头函数体使用花括号
+		"arrow-body-style": [
+			"error",
+			"always"
+		],
+		// 要求 return 语句要么总是指定返回的值，要么不指定
+		"consistent-return": [
+			"error"
+		],
+		// 禁止在条件中使用常量表达式
+		"no-constant-condition": [
+			"error"
+		],
+		// 强制把变量的使用限制在其定义的作用域范围内
+		"block-scoped-var": [
+			"error"
+		],
+		// 对于访问(json/object)结构，要求使用点号访问节点
+		"dot-notation": [
+			"error"
+		],
+		// 禁止出现空函数
+		"no-empty-function": [
+			"error"
+		],
+		// 禁止在计算属性中使用空格
+		"computed-property-spacing": [
+			"error",
+			"never"
+		],
+		// 禁止使用拖尾逗号
+		"comma-dangle": ["error", "never"],
+		// 强制数组方法的回调函数中有 return 语句
+		"array-callback-return": ["error"],
+		// 限制圈复杂度
+		"complexity": ["error", 11],
+		"no-alert": ["warn"],
+		// 禁用 arguments.caller 或 arguments.callee
+		"no-caller": ["error"],
+		// 禁止扩展原生类型
+		"no-extend-native": ["error"],
+		// 禁止数字字面量中使用前导和末尾小数点
+		"no-floating-decimal": ["error"],
+		// 禁止抛出异常字面量
+		"no-throw-literal": ["error"],
+		// 强制在parseInt()使用基数参数
+		"radix": ["error"],
+		"no-debugger": ["error"],
+		// 禁止对 function 声明重新赋值
+		"no-func-assign": ["error"],
+		// 强制数组方括号中使用一致的空格
+		"array-bracket-spacing": ["error", "never"],
+		// 禁止定义前使用
+		"no-use-before-define": ["error", { "functions": true, "classes": true,"variables": true }]
+	},
+	"plugins": [
+		// 此插件用来识别.html 和 .vue文件中的js代码   npm install eslint-plugin-html --save-dev
+		"html"
+	]
+}
