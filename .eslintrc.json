@@ -12,14 +12,16 @@
 {
 	"parser": "babel-eslint",
 	"env": {
-		"browser": true
+		"browser": true,
+		"node": true
 	},
 	"parserOptions": {
 		"ecmaVersion": 5
 	},
 	"globals": {
 	    "jQuery": false,
-	    "$": false
+	    "$": false,
+	    "require": false
 	},
 	"rules": {
 		"indent": [
@@ -229,7 +231,6 @@
 		"array-callback-return": ["error"],
 		// 限制圈复杂度
 		"complexity": ["error", 11],
-		"no-alert": ["warn"],
 		// 禁用 arguments.caller 或 arguments.callee
 		"no-caller": ["error"],
 		// 禁止扩展原生类型
@@ -244,9 +245,7 @@
 		// 禁止对 function 声明重新赋值
 		"no-func-assign": ["error"],
 		// 强制数组方括号中使用一致的空格
-		"array-bracket-spacing": ["error", "never"],
-		// 禁止定义前使用
-		"no-use-before-define": ["error", { "functions": true, "classes": true,"variables": true }]
+		"array-bracket-spacing": ["error", "never"]
 	},
 	"plugins": [
 		// 此插件用来识别.html 和 .vue文件中的js代码   npm install eslint-plugin-html --save-dev
