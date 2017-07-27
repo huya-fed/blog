@@ -21,7 +21,12 @@
 	"globals": {
 	    "jQuery": false,
 	    "$": false,
-	    "require": false
+	    "require": false,
+        "exports": false,
+        "module": false,
+        "define": false,
+        "__inline": false,
+        "__uri": false
 	},
 	"rules": {
 		"indent": [
@@ -133,7 +138,12 @@
 		// 键值对当中冒号与值之间要留空白。
 		"key-spacing": ["error", { "beforeColon": false }],
 		// 要求构造函数首字母大写
-		"new-cap": ["error"],
+		"new-cap": [
+			"error",
+			{ 
+				"properties": false
+			}
+		],
 		// 子类的构造器中一定要调用 super
 		"constructor-super": ["error"],
 		// 避免修改使用 const 声明的变量。
@@ -167,8 +177,6 @@
 		"space-before-blocks": ["error"],
 		// 圆括号间不留空格。
 		"space-in-parens": ["error", "never"],
-		// 注释首尾留空格。
-		"spaced-comment": ["error", "always"],
 		// 模板字符串中变量前后不加空格。
 		"template-curly-spacing": ["error", "never"],
 		// 用合法的字符串跟 typeof 进行比较操作。
