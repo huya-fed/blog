@@ -1,0 +1,94 @@
+/*
+* @Author: xiejinlong
+* @Date:   2017-03-03 15:23:57
+* @Last Modified by:   xiejinlong
+* @Last Modified time: 2017-03-03 16:14:31
+*/
+
+@import './base/__normalize';
+
+.mod-body-inner {
+	width: 500px;
+    margin: 10px auto 0;
+    font-size: 14px;
+    border: 1px solid rgba(0, 0, 0, .3);
+    box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+}
+
+header {
+    width: 100%;
+    background: #fff;
+
+    .bar {
+	    height: 30px;
+	    width: 100%;
+	    background: rgba(111, 178, 248, .1);
+	    border-bottom: 2px solid #ccc;
+	    clear: both;
+	    line-height: 20px;
+
+	    img {
+		    float: left;
+		    margin: 3px 0 0 3px
+		}
+		.text {
+		    padding: 5px;
+		    float: left;
+		}
+
+	}
+}
+
+.list-style {
+	margin: 0;
+    padding: 5px;
+    li {
+    	padding: 5px;
+    	line-height: 24px;
+    	fieldset {
+		    border: 1px solid #ccc;
+		    border-radius: 5px;
+		    padding-bottom: 10px;
+		    legend {
+			    margin: 0 15px;
+			    color: #f00;
+			    padding: 0px 10px;
+			}
+		}
+		input {
+		    margin: 15px 10px 5px 20px;
+		    float: left;
+		}
+		label {
+			float: left;
+    		margin: 9px 0 0 0;
+		}
+		#mins_val {
+			width: 300px;
+			margin: 10px 10px 5px;
+		}
+    }
+}
+
+hr {
+    height: 1px;
+    background: #ccc;
+    border: none;
+}
+.mod-btns {
+	padding: 10px;
+	.btn {
+	    margin: 5px 10px;
+	    cursor: pointer;
+	    height: 30px;
+	    width: 60px;
+	    background: #f9f9f9;
+	    border: 1px solid #ddd;
+	    border-radius: 4px;
+	 	&.close {
+		    background: #eee;
+		    margin-left: 0;
+		    margin-right: 20px;
+		}
+	}
+}

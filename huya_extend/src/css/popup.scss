@@ -1,0 +1,127 @@
+/*
+* @Author: xiejinlong
+* @Date:   2017-02-14 19:43:18
+* @Last Modified by:   xiejinlong
+* @Last Modified time: 2017-04-26 16:37:31
+*/
+
+
+// Defaults
+// 初始化
+@import './base/__normalize';
+
+.wrap {
+	width: 310px;
+}
+.subscribe {
+	font-size: 12px;
+
+	h2 {
+		height: 30px;
+		font-size: 12px;
+		font-weight: 800;
+		line-height: 30px;
+		color: #F80;
+
+		i {
+			float: left;
+			width: 2px;
+			height: 13px;
+			margin: 9px 5px 0 15px;
+			background: #F80;
+		}
+	}
+	.list {
+		padding-bottom: 5px;
+		border-bottom: 1px solid #eeeeee;
+		&:last-child {
+			border-bottom:none;
+		}
+		li {
+			height: 60px;
+			padding: 5px 0;
+			.screenshot {
+				float: left;
+				width: 100px;
+				height: 50px;
+				margin: 0 8px 0 15px;
+				background-repeat: no-repeat;
+				background-size: cover;
+				background-color: #e5e5e5;
+			}
+			.info {
+				float: left;
+				width: 185px;
+
+				.name {
+					margin: 2px 0 5px;
+					font-size: 12px;
+					color: #555;
+					width: 130px;
+				}
+				.other {
+					color: #9F9F9F;
+
+					.count {
+						float: right;
+						margin-right: 10px;
+
+						i {
+							float: left;
+							margin: 3px 5px 0 0;
+							width: 14px;
+							height: 12px;
+							background: url(../img/peo-icon.png) no-repeat;
+						}
+					}
+				}
+			}
+			&:hover {
+				cursor: pointer;
+				background: #EEE;
+			}
+		}
+	}
+}
+
+
+.loading {
+	padding: 10px 0;
+	text-align: center;
+	font-size: 12px;
+	img {
+		margin: -3px 5px 0 0;
+	}
+	ul{
+		text-align: center;
+		margin-top: 10px;
+		li {
+			display: inline-block;
+			margin: 0 5px;
+			cursor: pointer;
+			&:hover {
+				color: #f60;
+			}
+		}
+	}
+}
+
+
+/* 滚动条 */
+::-webkit-scrollbar{ height:6px; width:6px;border-radius: 3px;}
+::-webkit-scrollbar-thumb{
+  min-height:30px;
+  background: #9F9F9F;
+  border-radius: 3px;
+  box-shadow: 0 0 1px 1px rgba(255,255,255,0.25);
+}
+
+::-webkit-scrollbar-track:vertical { 
+  background:rgba(207,207,207,.8);
+}
+
+::-webkit-scrollbar-track:horizontal{ 
+  background:-webkit-gradient(linear, 0 0, 0 100%, from(rgba(0,0,0,.13)), to(rgba(0,0,0,.13)), color-stop(.5,rgba(0, 0, 0, .05)));
+}
+
+::-webkit-scrollbar-corner{ background:#e7e7e7;}

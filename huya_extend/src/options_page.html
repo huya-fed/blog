@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>直播盒子-配置项</title>
+        <link rel="stylesheet" href="css/options_page.scss">
+    </head>
+    <body>
+    	<div class="mod-body-inner">	
+			<header>
+				<div class="bar">
+					<img src="../src/img/logo/128.png" width="24"><span class="text">直播盒子-配置项</span>
+				</div>
+			</header>
+			<section class="opt-content">
+				<ul class="list-style">
+					<li>
+						<fieldset>
+							<legend>配置1：订阅推送间隔(单位: 分钟)，默认3分钟</legend>
+							<input type="number" value="3" id="mins_val" name="mins_val">
+						</fieldset>
+					</li>
+					<li>
+						<fieldset>
+							<legend>配置2：启用或关停相关功能</legend>
+							<p class="xjl-cf"><input type="checkbox" name="push" id="push" checked><label for="push">订阅消息主动推送</label></p>
+						</fieldset>	
+					</li>
+				</ul>
+				<hr>
+				<div class="mod-btns">
+					<button class="btn" id="btn_save">改好了</button><button class="btn close" id="btn_close">不改了</button>
+				</div>
+			</section>
+    	</div>
+    	<script type="text/javascript" src="lib/jquery.js"></script>
+    	<script type="text/javascript" src="js/options_page.js"></script>
+    </body>
+</html>

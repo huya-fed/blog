@@ -1,0 +1,54 @@
+{
+	"manifest_version": 2,
+
+	"name": "直播盒子",
+	"description": "提供全网平台的直播订阅，卡片-小窗口观看等功能",
+	"version": "1.0",
+	"icons": {
+        "128": "img/logo/128.png"
+    },
+    "browser_action": {
+        "default_icon": {                    // 可选
+            "128": "img/logo/128.png"          // 可选
+        },
+      //"default_title": "按钮提示",      // 可选，在工具提示中显示,不设置的话就用name属性
+      "default_popup": "popup.html"        // 可选
+    },
+	"content_scripts": [ 
+		{
+			"matches": [ 
+				"http://*/*", "https://*/*"  //指定内容脚本要插入到哪些页面中去
+			],
+			"js": [
+            	"lib/jquery.js",
+                "lib/analytics.js",
+            	"js/content.js"
+        	],
+            "run_at" : "document_end"
+		}
+	],
+	//"content_security_policy": "script-src 'self' https://*.huya.com https://*.yy.com; object-src 'self'; ",   //bg里面需要动态加载的
+	/*"externally_connectable": {
+	   "matches": ["http://*.huya.com/*"]  //允许页面向扩展bg.js发送信息
+	},*/
+    "options_page": "options_page.html",
+	//"homepage_url": "http://xjl.huya.com",  //主页
+	"background": {
+		"scripts": [
+          "lib/jquery.js",
+          "lib/event.js",
+          "js/background.js"
+        ]
+	},
+	"permissions": [
+        "alarms",  //定时器
+        "cookies",  //cookies
+        "background", //在浏览器后台运行
+        "storage", //存储
+        "tabs",  //打开tab页
+        "webRequest",  //网络请求 API
+        "notifications", //桌面通知 
+        "http://*/*",  //跨站 XMLHttpRequest
+        "https://*/*"   //跨站 XMLHttpRequest
+    ]
+}

@@ -1,0 +1,15 @@
+<h2><i></i><%=platform%></h2>
+<ul class="list">
+<% for(var i=0; i<ajson.length; i++){%>
+	<li url="<%= (host + ajson[i].roomId)%>">
+        <span class="screenshot" style="background-image: url(<%=ajson[i].screenshot%>);"></span>
+        <div class="info">
+            <p class="name xjl-ellipsis"><%=ajson[i].nick%></p>
+            <div class="other clearfix">
+                <% if(ajson[i].totalCount){%><span class="count"><i></i><%=ajson[i].totalCount%></span><%}%>
+                <span class="game"><%=ajson[i].gameFullName%></span>
+            </div>
+        </div>
+	</li>
+<% } %>
+</ul>
