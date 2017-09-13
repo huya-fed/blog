@@ -2,7 +2,7 @@
 * @Author: xiejinlong
 * @Date:   2017-03-01 14:09:47
 * @Last Modified by:   xiejinlong
-* @Last Modified time: 2017-09-13 10:22:04
+* @Last Modified time: 2017-09-13 11:34:41
 */
 
 
@@ -312,7 +312,7 @@
 						var showTime = 0;
 
 						try {
-							showTime = new Date(aData[i]['time']).getTime()
+							showTime = new Date(feed['time']).getTime()
 						}catch(e){
 						}
 
