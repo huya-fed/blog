@@ -4,10 +4,13 @@
 	<li url="<%= (host + ajson[i].roomId)%>">
         <span class="screenshot" style="background-image: url(<%=ajson[i].screenshot%>);"></span>
         <div class="info">
-            <p class="name xjl-ellipsis"><%=ajson[i].nick%></p>
+            <p class="name xjl-ellipsis"><%= ajson[i].roomTitle%></p>
             <div class="other clearfix">
                 <% if(ajson[i].totalCount){%><span class="count"><i></i><%=ajson[i].totalCount%></span><%}%>
-                <span class="game"><%=ajson[i].gameFullName%></span>
+                <% if(ajson[i].showTime) {%>
+                <span class="show-time xjl-ellipsis"><i></i><%=showTime(ajson[i].showTime)%></span>
+                <%}%>
+                <span class="nick-name xjl-ellipsis"><i></i><%=ajson[i].nick%></span>
             </div>
         </div>
 	</li>

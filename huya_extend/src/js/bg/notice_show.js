@@ -2,7 +2,7 @@
 * @Author: xiejinlong
 * @Date:   2017-03-01 14:09:47
 * @Last Modified by:   xiejinlong
-* @Last Modified time: 2017-03-09 10:36:53
+* @Last Modified time: 2017-09-13 10:05:32
 */
 
 
@@ -15,7 +15,7 @@
 
 	
 		var livesubscribe = function(cookie){
-			return $.getJSON('http://fw.huya.com/dispatch?do=livesubscribe&uid='+cookie.value);
+			return $.getJSON('http://fw.huya.com/dispatch?do=subscribeList&uid='+cookie.value);
 		}
 
 
@@ -28,17 +28,20 @@
 
 				for(var i=0; i <aData.length; i++){
 
-					var obj = {
-						roomId : aData[i].yyid,
-						screenshot : aData[i].screenshot+"?imageview/4/0/w/100/h/50/blur/1",
-						nick : aData[i].nick,
-						totalCount : aData[i].totalCount,
-						gameFullName : aData[i].gameFullName,
-						avatar : aData[i].avatar180,
-						roomTitle : ""
-					}
+					if (aData[i].isLive) {
+						var obj = {
+							roomId : aData[i].yyid,
+							screenshot : aData[i].screenshot+"?imageview/4/0/w/100/h/50/blur/1",
+							nick : aData[i].nick,
+							totalCount : aData[i].totalCount,
+							gameFullName : aData[i].gameName,
+							avatar : aData[i].avatar180,
+							roomTitle : aData[i].intro,
+							showTime : aData[i].startTime*1000
+						}
 
-					arr.push(obj);
+						arr.push(obj);
+					}
 				}
 			}
 
@@ -100,7 +103,8 @@
 						totalCount : aData[i].online,
 						gameFullName : aData[i].game_name,
 						avatar : aData[i].avatar,
-						roomTitle : aData[i].room_name
+						roomTitle : aData[i].room_name,
+						showTime : aData[i].show_time*1000
 					}
 
 					arr.push(obj);
@@ -150,6 +154,13 @@
 
 				for(var i=0; i <aData.length; i++){
 
+					var showTime = 0;
+
+					try {
+						showTime = new Date(aData[i].updatetime).getTime()
+					}catch(e){
+					}
+
 					var obj = {
 						roomId : aData[i].id,
 						screenshot : aData[i].pictures.img,
@@ -157,7 +168,8 @@
 						totalCount : aData[i].person_num,
 						gameFullName : aData[i].classification.cname,
 						avatar : aData[i].userinfo.avatar,
-						roomTitle : aData[i].name
+						roomTitle : aData[i].name,
+						showTime: showTime
 					}
 
 
@@ -224,6 +236,13 @@
 
 					if(aData[i].status == 1){
 
+						var showTime = 0;
+
+						try {
+							showTime = new Date(aData[i]['play_at']).getTime()
+						}catch(e){
+						}
+
 						var obj = {
 							roomId : aData[i].uid,
 							screenshot : aData[i].thumb,
@@ -231,7 +250,8 @@
 							totalCount : aData[i].view,
 							gameFullName : aData[i].category_name,
 							avatar : aData[i].avatar,
-							roomTitle : aData[i].title
+							roomTitle : aData[i].title,
+							showTime : showTime
 						}
 
 						
@@ -295,13 +315,21 @@
 
 					if(feed){
 
+						var showTime = 0;
+
+						try {
+							showTime = new Date(aData[i]['time']).getTime()
+						}catch(e){
+						}
+
 						var obj = {
 							roomId : aData[i].room.domain,
 							screenshot : aData[i].liveScreenPic,
 							nick : aData[i].room.name,
 							gameFullName : feed.gameName,
 							avatar : aData[i].room.logo,
-							roomTitle : aData[i].room.boardCast_Title
+							roomTitle : aData[i].room.boardCast_Title,
+							showTime : showTime
 						}
 
 						arr.push(obj);
@@ -357,18 +385,20 @@
 			if(Array.isArray(aData) && aData.length > 0){
 
 				for(var i=0; i <aData.length; i++){
+					if (aData[i].status>0) {
+						var obj = {
+								roomId : aData[i].roomUrl,
+								screenshot : aData[i].spic,
+								nick : aData[i].nickname,
+								totalCount : aData[i].follows,
+								gameFullName : aData[i].gameName,
+								avatar : aData[i].avatar+'-big',
+								roomTitle : aData[i].title
+							}
 
-					var obj = {
-							roomId : aData[i].roomUrl,
-							screenshot : aData[i].spic,
-							nick : aData[i].nickname,
-							totalCount : aData[i].follows,
-							gameFullName : aData[i].gameName,
-							avatar : aData[i].avatar+'-big',
-							roomTitle : aData[i].title
-						}
-
-					arr.push(obj);
+						arr.push(obj);
+					}
+					
 				}
 			}
 
@@ -405,10 +435,79 @@
 		}
 	})();
 
+	//战旗
+	var chushouSub = (function(){
+
+		var livesubscribe = function(){
+			return $.getJSON('https://chushou.tv/subscriber/down.htm?pageSize=9');
+		}
+
+		//数据适配
+		var adaptiveData  = function(aData){
+
+			var arr = [];
+
+			if(Array.isArray(aData) && aData.length > 0){
+
+				for(var i=0; i <aData.length; i++){
+					if (aData[i].liveStatus) {
+
+						var obj = {
+								roomId : aData[i].liveStatus.roomId + '.htm',
+								screenshot : aData[i].liveStatus.screenshot,
+								nick : aData[i].creator.nickname,
+								totalCount : aData[i].liveStatus.onlineCount,
+								gameFullName : aData[i].liveStatus.game.name,
+								avatar : aData[i].creator.avatar,
+								roomTitle : aData[i].liveStatus.name,
+								showTime : aData[i].liveStatus.createdTime
+							}
+
+						arr.push(obj);
+					}
+					
+				}
+			}
+
+			return arr
+		}
+
+		return {
+			
+			getData : function(callback){
+
+				livesubscribe().then(function(json){
+
+					if(json.code == 0 && json.data && json.data.items){
+
+						var aJson = adaptiveData(json.data.items);
+
+						console.log('触手订阅的数据--------------');
+						console.log(aJson);
+
+
+						if(aJson.length > 0){
+							callback && callback({
+								platform : '触手',
+								host : 'https://chushou.tv/room/',
+								ajson : aJson
+							})
+						}
+					}
+
+					
+				})
+
+			}
+		}
+	})();
+
+	
 
 
 
-	var subList = [huyaSub,douyuSub,pandaSub,quanminSub,longzhuSub,zhanqiSub];
+
+	var subList = [huyaSub, douyuSub, pandaSub, quanminSub, longzhuSub, zhanqiSub, chushouSub];
 
 	//公用模块
 	function SubModule(){

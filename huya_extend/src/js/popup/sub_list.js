@@ -2,12 +2,29 @@
 * @Author: xiejinlong
 * @Date:   2017-02-22 14:40:13
 * @Last Modified by:   xiejinlong
-* @Last Modified time: 2017-04-26 16:31:34
+* @Last Modified time: 2017-09-12 18:25:49
 */
 
 
 function SubList(){
 	this.initialize.apply(this, arguments);
+}
+
+
+var nowTime = new Date().getTime(); 
+
+function showTime(time){
+	var result = ((nowTime - time) / (60 *1000)).toFixed(0);  // 秒
+
+
+	var min = result % 60;
+	var hour = Math.floor(result / 60);
+
+
+	return '已播' + hour + '时' + min + '分';
+
+
+ 
 }
 
 
