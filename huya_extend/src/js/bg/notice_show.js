@@ -2,7 +2,7 @@
 * @Author: xiejinlong
 * @Date:   2017-03-01 14:09:47
 * @Last Modified by:   xiejinlong
-* @Last Modified time: 2017-09-13 10:05:32
+* @Last Modified time: 2017-09-13 10:22:04
 */
 
 
@@ -154,12 +154,6 @@
 
 				for(var i=0; i <aData.length; i++){
 
-					var showTime = 0;
-
-					try {
-						showTime = new Date(aData[i].updatetime).getTime()
-					}catch(e){
-					}
 
 					var obj = {
 						roomId : aData[i].id,
@@ -169,7 +163,7 @@
 						gameFullName : aData[i].classification.cname,
 						avatar : aData[i].userinfo.avatar,
 						roomTitle : aData[i].name,
-						showTime: showTime
+						showTime: aData[i]['start_time']*1000
 					}
 
 
