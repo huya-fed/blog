@@ -2,7 +2,7 @@
 * @Author: xiejinlong
 * @Date:   2017-03-01 14:09:47
 * @Last Modified by:   xiejinlong
-* @Last Modified time: 2017-09-13 11:34:41
+* @Last Modified time: 2017-09-14 12:20:25
 */
 
 
@@ -429,7 +429,7 @@
 		}
 	})();
 
-	//战旗
+	//触手tv
 	var chushouSub = (function(){
 
 		var livesubscribe = function(){
@@ -580,17 +580,22 @@
 					_this.dataObj[index].ajson = _this.dataObj[index].ajson || [];
 					var newArr = oData.ajson;
 
-					var oldIdArr  = _this.pluck(_this.dataObj[index].ajson,'yyid');
+					var oldIdArr  = _this.pluck(_this.dataObj[index].ajson,'roomId');
 					var noticeList = [];
+
 
 
 					//筛选出新的数据在不旧的里面
 					newArr.forEach(function(item,key){
-						if(oldIdArr.indexOf(item.yyid)==-1){
-							noticeList.push(item);
+						if(oldIdArr.indexOf(item.roomId)==-1){
+							if(oldIdArr.length){ // 首次为空的话，就不推送了，防止浏览器首次启动为空
+								noticeList.push(item)
+							}
 							_this.dataObj[index].ajson.push(item);//推送过的就不推送了
 						}
 					})
+
+					
 
 					UTIL.getNoticePermission()
 						.then(function(){
@@ -636,16 +641,16 @@
 
 		if(tab.optionsPage){
 
-			if(tab.optionsPage.push){
+			if(tab.optionsPage.push){  // 主动推送
 				chrome.alarms.create('noticeShow',{
-					delayInMinutes : +tab.optionsPage.mins_val,
+					delayInMinutes : + 0,
 					periodInMinutes : +tab.optionsPage.mins_val
 				})
 			}
 		}else{
 
 			chrome.alarms.create('noticeShow',{
-				delayInMinutes : 3,
+				delayInMinutes : 0,
 				periodInMinutes : 3
 			})
 		}
