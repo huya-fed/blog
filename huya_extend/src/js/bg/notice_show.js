@@ -2,7 +2,7 @@
 * @Author: xiejinlong
 * @Date:   2017-03-01 14:09:47
 * @Last Modified by:   xiejinlong
-* @Last Modified time: 2017-09-14 12:20:25
+* @Last Modified time: 2017-09-14 15:23:40
 */
 
 
@@ -429,6 +429,136 @@
 		}
 	})();
 
+	//B站
+	var bilibiliSub = (function(){
+
+		var livesubscribe = function(){
+			return $.getJSON('https://api.live.bilibili.com/feed/v1/feed/getList?page=1');
+		}
+
+		//数据适配
+		var adaptiveData  = function(aData){
+
+			var arr = [];
+
+			if(Array.isArray(aData) && aData.length > 0){
+
+				for(var i=0; i <aData.length; i++){
+
+					var obj = {
+							roomId : aData[i].short_id || aData[i].room_id,
+							screenshot : aData[i].keyframe,
+							nick : aData[i].nickname,
+							totalCount : aData[i].online,
+							gameFullName : aData[i].area_name,
+							avatar : aData[i].face,
+							roomTitle : aData[i].roomname,
+							showTime : aData[i].liveTime *1000
+						}
+
+					arr.push(obj);
+					
+				}
+			}
+
+			return arr
+		}
+
+		return {
+			
+			getData : function(callback){
+
+				livesubscribe().then(function(json){
+
+					if(json.code == 0 && json.data && json.data.rooms){
+
+						var aJson = adaptiveData(json.data.rooms);
+
+						console.log('哔哩哔哩订阅的数据--------------');
+						console.log(aJson);
+
+
+						if(aJson.length > 0){
+							callback && callback({
+								platform : '哔哩哔哩(B站)',
+								host : 'http://live.bilibili.com/',
+								ajson : aJson
+							})
+						}
+					}
+
+					
+				})
+
+			}
+		}
+	})();
+
+	//YY直播
+	var yySub = (function(){
+
+		var livesubscribe = function(){
+			return $.getJSON('http://www.yy.com/yyweb/user/queryLivePreview.json');
+		}
+
+		//数据适配
+		var adaptiveData  = function(aData){
+
+			var arr = [];
+
+			if(Array.isArray(aData) && aData.length > 0){
+
+				for(var i=0; i <aData.length; i++){
+
+					var obj = {
+							roomId : aData[i].short_id || aData[i].room_id,
+							screenshot : aData[i].liveCover,
+							nick : aData[i].anchorInfo.stageName,
+							totalCount : aData[i].users,
+							gameFullName : '',
+							avatar : aData[i].anchorInfo.hdLogo,
+							roomTitle : aData[i].title,
+							showTime : aData[i].liveTime
+						}
+
+					arr.push(obj);
+					
+				}
+			}
+
+			return arr
+		}
+
+		return {
+			
+			getData : function(callback){
+
+				livesubscribe().then(function(json){
+
+					if(json.resultCode == 0 && json.data && json.data.att){
+
+						var aJson = adaptiveData(json.data.att);
+
+						console.log('YY直播订阅的数据--------------');
+						console.log(aJson);
+
+
+						if(aJson.length > 0){
+							callback && callback({
+								platform : 'YY直播',
+								host : 'http://www.yy.com/',
+								ajson : aJson
+							})
+						}
+					}
+
+					
+				})
+
+			}
+		}
+	})();
+
 	//触手tv
 	var chushouSub = (function(){
 
@@ -501,7 +631,7 @@
 
 
 
-	var subList = [huyaSub, douyuSub, pandaSub, quanminSub, longzhuSub, zhanqiSub, chushouSub];
+	var subList = [huyaSub, douyuSub, pandaSub, quanminSub, longzhuSub, zhanqiSub, bilibiliSub, yySub, chushouSub];
 
 	//公用模块
 	function SubModule(){
