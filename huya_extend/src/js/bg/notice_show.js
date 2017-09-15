@@ -2,7 +2,7 @@
 * @Author: xiejinlong
 * @Date:   2017-03-01 14:09:47
 * @Last Modified by:   xiejinlong
-* @Last Modified time: 2017-09-14 15:23:40
+* @Last Modified time: 2017-09-15 18:18:06
 */
 
 
@@ -384,7 +384,7 @@
 								roomId : aData[i].roomUrl,
 								screenshot : aData[i].spic,
 								nick : aData[i].nickname,
-								totalCount : aData[i].follows,
+								totalCount : aData[i].online,
 								gameFullName : aData[i].gameName,
 								avatar : aData[i].avatar+'-big',
 								roomTitle : aData[i].title
@@ -497,8 +497,10 @@
 	//YY直播
 	var yySub = (function(){
 
+		var timeNow = Date.now();
+
 		var livesubscribe = function(){
-			return $.getJSON('http://www.yy.com/yyweb/user/queryLivePreview.json');
+			return $.getJSON('http://www.yy.com/yyweb/user/queryLivePreview.json?_=' + timeNow);
 		}
 
 		//数据适配
@@ -510,18 +512,20 @@
 
 				for(var i=0; i <aData.length; i++){
 
-					var obj = {
-							roomId : aData[i].short_id || aData[i].room_id,
-							screenshot : aData[i].liveCover,
-							nick : aData[i].anchorInfo.stageName,
-							totalCount : aData[i].users,
-							gameFullName : '',
-							avatar : aData[i].anchorInfo.hdLogo,
-							roomTitle : aData[i].title,
-							showTime : aData[i].liveTime
-						}
+					if ( aData[i].liveType > 0) {
+						var obj = {
+								roomId : aData[i].liveUrl,
+								screenshot : aData[i].liveCover,
+								nick : aData[i].anchorInfo.stageName || aData[i].anchorInfo.nick,
+								totalCount : aData[i].users,
+								gameFullName : '',
+								avatar : aData[i].anchorInfo.logo,
+								roomTitle : aData[i].title,
+								showTime : aData[i].liveTime
+							}
 
-					arr.push(obj);
+						arr.push(obj);
+					}
 					
 				}
 			}
@@ -693,6 +697,7 @@
 						"iconUrl" : item.avatar,
 						"title" : item.nick+"---正在开播:",
 						"message" : item.roomTitle,
+						"priority" : 2,
 						"contextMessage" : "来自 "+oData.platform+" 直播平台"
 					})
 				})
