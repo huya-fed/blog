@@ -2,7 +2,7 @@
 * @Author: xiejinlong
 * @Date:   2017-03-01 14:09:47
 * @Last Modified by:   xiejinlong
-* @Last Modified time: 2017-09-15 18:18:06
+* @Last Modified time: 2017-09-18 15:59:49
 */
 
 
@@ -83,48 +83,68 @@
 	var douyuSub = (function(){
 
 		var livesubscribe = function(){
-			return $.getJSON('https://www.douyu.com/member/cp/get_follow_list');
+			return $.ajax({
+				url : 'https://www.douyu.com/room/follow',
+				dataType: 'html'
+			})
 		}
 
 
-		//数据适配
-		var adaptiveData  = function(aData){
+		var parseHTML = function parseHTML(html, promiseFactory) {
+	        var $iframe = $('<iframe></iframe>');
+	        var dom = $.parseHTML(html, $iframe.document);
+	        var list = promiseFactory(dom);
+	        $iframe.remove();
+	        return list;
+	    };
 
-			var arr = [];
+	    var getInfoFromItem = function getInfoFromItem(item) {
+            item = $(item);
+            if (item.find('i.icon_live').length == 0) return null;
+            var beginTime = item.find('span.glyphicon01_playtime').text().trim();
+            var timeRE = /(\d+)分钟/;
+            if (!timeRE.test(beginTime)) {
+                beginTime = false;
+            } else {
+                beginTime = parseInt(timeRE.exec(beginTime)[1]);
+                beginTime = new Date().getTime() - beginTime * 1000 * 60;
+            }
 
-			if(Array.isArray(aData) && aData.length > 0){
-
-				for(var i=0; i <aData.length; i++){
-
-					var obj = {
-						roomId : aData[i].room_id,
-						screenshot : aData[i].room_src,
-						nick : aData[i].nickname,
-						totalCount : aData[i].online,
-						gameFullName : aData[i].game_name,
-						avatar : aData[i].avatar,
-						roomTitle : aData[i].room_name,
-						showTime : aData[i].show_time*1000
-					}
-
-					arr.push(obj);
-				}
-			}
-
-			return arr
-		}	
+            var roomid = item.find('div>div>a').attr('href').replace('/', '');
+            return {
+                roomId: roomid,
+                roomTitle: item.find('h1').text().trim(),
+                showTime: beginTime,
+                nick: item.find('span.username').text().trim(),
+                totalCount: parseInt(item.find('span.glyphicon01_hot').text().trim()),
+                screenshot: item.find('img').data('original'),
+                gameFullName: item.find('.sort_focus').find('.glyphicon01').text().trim(),
+                avatar: item.find('img').data('original')
+            };
+        };
 
 		return {
 			
 			getData : function(callback){
 
-				livesubscribe().then(function(json){
-
-					var aJson = adaptiveData(json.room_list);
-
-					console.log('斗鱼订阅的数据--------------');
-					console.log(aJson);
-
+				livesubscribe().then(function(html) {
+			        return parseHTML(html, function (dom) {
+		                var followedList = $(dom).find('.attention > ul');
+		                if (followedList.length == 0) {
+		                    throw new Error('douyu not login');
+		                    return [];
+		                }
+		                var itemArray = $.makeArray(followedList.children());
+		                itemArray = itemArray.map(getInfoFromItem);
+		                return itemArray.filter(function (i) {
+		                    return i;
+		                });
+		            })
+				}).then(function(aJson) {
+		            	console.log('斗鱼订阅的数据--------------');
+						
+						console.log(aJson)
+						
 					if(aJson.length > 0){ 
 						callback && callback({
 							platform : '斗鱼',
@@ -132,8 +152,7 @@
 							ajson : aJson
 						})
 					}
-				})
-
+				}) 
 			}
 		}
 	})();
@@ -494,6 +513,76 @@
 		}
 	})();
 
+	//火猫
+	var huomaoSub = (function(){
+
+
+		var livesubscribe = function(){
+			return $.getJSON('https://www.huomao.com/subscribe/getUsersSubscribe?tag_name=top');
+		}
+
+		//数据适配
+		var adaptiveData  = function(aData){
+
+			var arr = [];
+
+			if(Array.isArray(aData) && aData.length > 0){
+
+				for(var i=0; i <aData.length; i++){
+
+					if ( aData[i].is_live > 0) {
+						var obj = {
+								roomId : aData[i].room_number,
+								screenshot : aData[i].image,
+								nick : aData[i].nickname,
+								totalCount : aData[i].views,
+								gameFullName : aData[i].gameCname,
+								avatar : aData[i].headimg.big,
+								roomTitle : aData[i].channel,
+								showTime : aData[i].liveTime
+							}
+
+						arr.push(obj);
+					}
+					
+				}
+			}
+
+			return arr
+		}
+
+		return {
+			
+			getData : function(callback){
+
+				livesubscribe().then(function(json){
+
+					if(json.status && json.data && json.data.usersSubChannelsLiving){
+
+						var aJson = adaptiveData(json.data.usersSubChannelsLiving);
+
+						console.log('火猫订阅的数据--------------');
+						console.log(aJson);
+
+
+						if(aJson.length > 0){
+							callback && callback({
+								platform : '火猫',
+								host : 'https://www.huomao.com/',
+								ajson : aJson
+							})
+						}
+					}
+
+					
+				})
+
+			}
+		}
+	})();
+
+	
+
 	//YY直播
 	var yySub = (function(){
 
@@ -635,7 +724,7 @@
 
 
 
-	var subList = [huyaSub, douyuSub, pandaSub, quanminSub, longzhuSub, zhanqiSub, bilibiliSub, yySub, chushouSub];
+	var subList = [huyaSub, douyuSub, pandaSub, quanminSub, longzhuSub, zhanqiSub, bilibiliSub, huomaoSub, yySub, chushouSub];
 
 	//公用模块
 	function SubModule(){
