@@ -208,10 +208,6 @@
 			"error",
 			"always"
 		],
-		// 要求 return 语句要么总是指定返回的值，要么不指定
-		"consistent-return": [
-			"error"
-		],
 		// 禁止在条件中使用常量表达式
 		"no-constant-condition": [
 			"error"
